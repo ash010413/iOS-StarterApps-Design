@@ -25,14 +25,38 @@ struct QuizBrain {
     ]
     
     var questionNumber = 0
+    var score = 0
     
-    func checkAnswer(userAnswer: String) {
-        let actualAnswer = self.quiz[questionNumber].answer
+    mutating func checkAnswer(userAnswer: String) -> Bool {
+        let actualAnswer =  quiz[questionNumber].answer
         
         if userAnswer == actualAnswer {
-            (sender as! UIButton).backgroundColor = UIColor.green
+            score += 1
+            return true
         } else {
-            (sender as! UIButton).backgroundColor = UIColor.red
+            return false
+        }
+    }
+    
+    func getQuestionText() -> String {
+        return quiz[questionNumber].text
+    }
+    
+    func getProgress() -> Float {
+        return Float(questionNumber+1)/Float(quiz.count)
+    }
+    
+    func getScore() -> Int {
+        return score
+    }
+    
+    mutating func nextQuestion () {
+        if questionNumber < quiz.count - 1 {
+            questionNumber += 1
+        }
+        else {
+            questionNumber = 0
+            score = 0
         }
     }
 }
